@@ -1,20 +1,11 @@
 targets:
-  base_test:
+  backup_test:
     compression:
       type: tgz
     encryption:
       type: openssl
       password: test
       salt: false
-    storages:
-      local1:
-        type: local
-        keep: 1
-        path: /backups
-      local2:
-        type: local
-        keep: 2
-        path: /backups2
     sources:
       mysql_test:
         type: mysql
@@ -23,7 +14,45 @@ targets:
         database: test
         username: test
         password: test
+      pgsql_test:
+        type: postgresql
+        host: localhost
+        database: test
+        username: test
+        password: test
       files_test:
         type: fs
         include:
           - /web
+        exclude:
+          - /web/.git
+    storages:
+      local_storage:
+        type: local
+        keep: 5
+        path: /backups
+      s3_storage:
+        type: s3
+        keep: 3
+        bucket: backup-bucket
+        region: us-east-1
+        path: backups
+        access_key_id: your_access_key
+        secret_access_key: your_secret_key
+      ftp_storage:
+        type: ftp
+        keep: 10
+        path: /backups
+        host: domain.com
+        port: 21
+        username: test
+        password: test
+      scp_storage:
+        type: scp
+        keep: 10
+        path: /backup
+        host: domain.com
+        private_key: /home/user/.ssh/id_rsa
+        username: test
+        password: test
+        timeout: 30
