@@ -12,5 +12,7 @@
 *.out
 
 .idea/
-quarterback
 .DS_Store
+
+quarterback
+quarterback.yml

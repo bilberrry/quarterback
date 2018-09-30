@@ -2,19 +2,23 @@ targets:
   base_test:
     compression:
       type: tgz
+    encryption:
+      type: openssl
+      password: test
+      salt: false
     storage:
       type: local
       keep: 1
-      path: /Users/garret/dev/_go/src/github.com/bilberrry/quarterback
+      path: /backups
     sources:
       mysql_test:
         type: mysql
         host: 127.0.0.1
-        port: 3316
-        database: hlg
+        port: 3306
+        database: test
         username: test
         password: test
       files_test:
         type: fs
         include:
-          - /Users/garret/dev/_go/src/github.com/bilberrry/quarterback/storage
+          - /web
