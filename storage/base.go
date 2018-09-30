@@ -10,10 +10,12 @@ import (
 )
 
 type Base struct {
-	target      common.TargetConfig
-	archivePath string
-	viper       *viper.Viper
-	keep        int
+	target        common.TargetConfig
+	storageConfig common.SubConfig
+	archivePath   string
+	viper         *viper.Viper
+	name          string
+	keep          int
 }
 
 type Context interface {
@@ -23,11 +25,32 @@ type Context interface {
 	delete(fileName string) error
 }
 
-func initBase(target common.TargetConfig, archivePath string) (base Base) {
+func Run(target common.TargetConfig, archivePath string) (err error) {
+	if len(target.Storages) == 0 {
+		return nil
+	}
+
+	logger.Info("---------- Storing process started")
+
+	for _, storageConfig := range target.Storages {
+		err := processStorage(target, storageConfig, archivePath)
+		if err != nil {
+			return err
+		}
+	}
+
+	logger.Info("---------- Storing process finished\n")
+
+	return nil
+}
+
+func initBase(target common.TargetConfig, storageConfig common.SubConfig, archivePath string) (base Base) {
 	base = Base{
-		target:      target,
-		archivePath: archivePath,
-		viper:       target.Storage.Viper,
+		target:        target,
+		storageConfig: storageConfig,
+		viper:         storageConfig.Viper,
+		name:          storageConfig.Name,
+		archivePath:   archivePath,
 	}
 
 	if base.viper != nil {
@@ -37,15 +60,14 @@ func initBase(target common.TargetConfig, archivePath string) (base Base) {
 	return
 }
 
-func Run(target common.TargetConfig, archivePath string) (err error) {
-	logger.Info("---------- Storing process started\n")
+func processStorage(target common.TargetConfig, storageConfig common.SubConfig, archivePath string) (err error) {
+	base := initBase(target, storageConfig, archivePath)
 
 	newFileName := filepath.Base(archivePath)
-	base := initBase(target, archivePath)
 
 	var ctx Context
 
-	switch target.Storage.Type {
+	switch storageConfig.Type {
 	case "local":
 		ctx = &Local{Base: base}
 	case "ftp":
@@ -55,11 +77,11 @@ func Run(target common.TargetConfig, archivePath string) (err error) {
 	case "s3":
 		ctx = &S3{Base: base}
 	default:
-		logger.Warn(fmt.Errorf("storage type `%s` is not implemented", target.Storage.Type))
+		logger.Warn(fmt.Errorf("storage type `%s` is not implemented", storageConfig.Type))
 		return
 	}
 
-	logger.Info("=> Storage: ", ", type: ", target.Storage.Type)
+	logger.Info("=> Storage: ", storageConfig.Name, ", type: ", storageConfig.Type)
 
 	err = ctx.open()
 	if err != nil {
@@ -74,9 +96,7 @@ func Run(target common.TargetConfig, archivePath string) (err error) {
 	}
 
 	cleaner := Cleaner{}
-	cleaner.process(target.Name, newFileName, base.keep, ctx.delete)
+	cleaner.process(target.Name, storageConfig.Name, newFileName, base.keep, ctx.delete)
 
-	logger.Info("---------- Storing process finished\n")
-
-	return nil
+	return
 }

@@ -13,7 +13,7 @@ type Local struct {
 }
 
 func (ctx *Local) open() (err error) {
-	ctx.destPath = ctx.target.Storage.Viper.GetString("path")
+	ctx.destPath = ctx.viper.GetString("path")
 	common.CreateDir(ctx.destPath)
 	return
 }

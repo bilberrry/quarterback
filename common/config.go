@@ -21,7 +21,6 @@ type TargetConfig struct {
 	WorkPath    string
 	Compression SubConfig
 	Encryption  SubConfig
-	Storage     SubConfig
 	Archive     *viper.Viper
 	Sources     []SubConfig
 	Storages    []SubConfig
@@ -75,11 +74,6 @@ func loadTarget(key string) (target TargetConfig) {
 		Viper: target.Viper.Sub("encryption"),
 	}
 
-	target.Storage = SubConfig{
-		Type:  target.Viper.GetString("storage.type"),
-		Viper: target.Viper.Sub("storage"),
-	}
-
 	loadSourcesConfig(&target)
 	loadStoragesConfig(&target)
 
@@ -88,10 +82,11 @@ func loadTarget(key string) (target TargetConfig) {
 
 func loadSourcesConfig(target *TargetConfig) {
 	subViper := target.Viper.Sub("sources")
+
 	for key := range target.Viper.GetStringMap("sources") {
 
 		sourceViper := subViper.Sub(key)
-		target.Sources = append(target.Sources, SubConfig{
+		target.Sources = append(target.Sources, SubConfig {
 			Name:  key,
 			Type:  sourceViper.GetString("type"),
 			Viper: sourceViper,
@@ -99,15 +94,17 @@ func loadSourcesConfig(target *TargetConfig) {
 	}
 }
 
-// TODO: TODO
+
 func loadStoragesConfig(target *TargetConfig) {
 	subViper := target.Viper.Sub("storages")
+
 	for key := range target.Viper.GetStringMap("storages") {
-		dbViper := subViper.Sub(key)
-		target.Storages = append(target.Storages, SubConfig{
+
+		storageViper := subViper.Sub(key)
+		target.Storages = append(target.Storages, SubConfig {
 			Name:  key,
-			Type:  dbViper.GetString("type"),
-			Viper: dbViper,
+			Type:  storageViper.GetString("type"),
+			Viper: storageViper,
 		})
 	}
 }

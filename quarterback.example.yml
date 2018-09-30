@@ -6,10 +6,15 @@ targets:
       type: openssl
       password: test
       salt: false
-    storage:
-      type: local
-      keep: 1
-      path: /backups
+    storages:
+      local1:
+        type: local
+        keep: 1
+        path: /backups
+      local2:
+        type: local
+        keep: 2
+        path: /backups2
     sources:
       mysql_test:
         type: mysql

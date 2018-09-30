@@ -21,6 +21,25 @@ type Context interface {
 	process() error
 }
 
+func Run(target common.TargetConfig) error {
+	if len(target.Sources) == 0 {
+		return nil
+	}
+
+	logger.Info("---------- Sources processing started")
+
+	for _, sourceConfig := range target.Sources {
+		err := processSource(target, sourceConfig)
+		if err != nil {
+			return err
+		}
+	}
+
+	logger.Info("---------- Sources processing finished\n")
+
+	return nil
+}
+
 func initBase(target common.TargetConfig, sourceConfig common.SubConfig) (base Base) {
 	base = Base{
 		target:       target,
@@ -62,26 +81,5 @@ func processSource(target common.TargetConfig, sourceConfig common.SubConfig) (e
 		return err
 	}
 
-	logger.Info("")
-
 	return
-}
-
-func Run(target common.TargetConfig) error {
-	if len(target.Sources) == 0 {
-		return nil
-	}
-
-	logger.Info("---------- Sources processing started")
-
-	for _, sourcesConfig := range target.Sources {
-		err := processSource(target, sourcesConfig)
-		if err != nil {
-			return err
-		}
-	}
-
-	logger.Info("---------- Sources processing finished\n")
-
-	return nil
 }

@@ -27,8 +27,8 @@ type Cleaner struct {
 	isLoaded bool
 }
 
-func (c *Cleaner) process(target string, fileName string, keep int, deletePackage func(fileName string) error) {
-	cleanerFileName := path.Join(cleanerPath, target+".json")
+func (c *Cleaner) process(target string, storage string, fileName string, keep int, deletePackage func(fileName string) error) {
+	cleanerFileName := path.Join(cleanerPath, target + "-" + storage + ".json")
 
 	c.load(cleanerFileName)
 	c.add(fileName)
