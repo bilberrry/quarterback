@@ -47,7 +47,7 @@ func init() {
 
 	err := viper.ReadInConfig()
 	if err != nil {
-		logger.Error("Can't find quarterback common file", err)
+		logger.Error("Can't find quarterback config: ", err)
 		return
 	}
 

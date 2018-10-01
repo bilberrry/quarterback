@@ -10,6 +10,7 @@ import (
 const (
 	appName = "quarterback"
 	appDesc = "Manage your backups from one common file"
+	appVersion = "0.1.2"
 )
 
 func main() {
@@ -18,6 +19,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = appName
 	app.Usage = appDesc
+	app.Version = appVersion
 
 	app.Commands = []cli.Command{
 		{
