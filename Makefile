@@ -15,7 +15,7 @@ deps:
 
 build:
 	@echo "==> Build $(BIN_NAME) ..."; \
-	$(GO_BUILD) -o $(BIN_NAME)
+	$(GO_BUILD) -ldflags="-s -w" -o $(BIN_NAME)
 
 clean:
 	@echo "==> Clean $(BIN_NAME) ..."; \

@@ -28,7 +28,7 @@ type Cleaner struct {
 }
 
 func (c *Cleaner) process(target string, storage string, fileName string, keep int, deletePackage func(fileName string) error) {
-	cleanerFileName := path.Join(cleanerPath, target + "-" + storage + ".json")
+	cleanerFileName := path.Join(cleanerPath, target+"-"+storage+".json")
 
 	c.load(cleanerFileName)
 	c.add(fileName)

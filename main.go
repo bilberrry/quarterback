@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	appName = "quarterback"
-	appDesc = "Manage your backups from one common file"
+	appName    = "quarterback"
+	appDesc    = "Manage your backups from one common file"
 	appVersion = "0.1.2"
 )
 

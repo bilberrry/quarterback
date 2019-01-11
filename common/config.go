@@ -86,7 +86,7 @@ func loadSourcesConfig(target *TargetConfig) {
 	for key := range target.Viper.GetStringMap("sources") {
 
 		sourceViper := subViper.Sub(key)
-		target.Sources = append(target.Sources, SubConfig {
+		target.Sources = append(target.Sources, SubConfig{
 			Name:  key,
 			Type:  sourceViper.GetString("type"),
 			Viper: sourceViper,
@@ -94,14 +94,13 @@ func loadSourcesConfig(target *TargetConfig) {
 	}
 }
 
-
 func loadStoragesConfig(target *TargetConfig) {
 	subViper := target.Viper.Sub("storages")
 
 	for key := range target.Viper.GetStringMap("storages") {
 
 		storageViper := subViper.Sub(key)
-		target.Storages = append(target.Storages, SubConfig {
+		target.Storages = append(target.Storages, SubConfig{
 			Name:  key,
 			Type:  storageViper.GetString("type"),
 			Viper: storageViper,
