@@ -29,7 +29,7 @@ func (ctx *MongoDB) process() (err error) {
 	ctx.port = viper.GetString("port")
 	ctx.username = viper.GetString("username")
 	ctx.password = viper.GetString("password")
-	ctx.database = viper.GetString("source")
+	ctx.database = viper.GetString("database")
 	ctx.authdb = viper.GetString("authdb")
 
 	err = ctx.dump()

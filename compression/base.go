@@ -48,7 +48,7 @@ func Run(target common.TargetConfig) (archivePath string, err error) {
 	logger.Info("---------- Compression started")
 	logger.Info("=> Type: " + target.Compression.Type)
 
-	os.Chdir(path.Join(target.WorkPath, "../"))
+	_ = os.Chdir(path.Join(target.WorkPath, "../"))
 
 	archivePath, err = ctx.process()
 
