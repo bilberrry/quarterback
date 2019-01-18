@@ -73,7 +73,9 @@ func (ctx *MongoDB) getArgs() []string {
 func (ctx *MongoDB) dump() error {
 	logger.Info("=> Dumping MongoDB...")
 
-	_, err := common.Exec("mongodump", strings.Join(ctx.getArgs(), " "), "--out="+ctx.WorkPath)
+	cmd := "mongodump "+strings.Join(ctx.getArgs(), " ")+" --out="+ctx.WorkPath
+	logger.Info(cmd)
+	_, err := common.Exec(cmd)
 
 	if err != nil {
 		logger.Error("Dump error: %s", err)
