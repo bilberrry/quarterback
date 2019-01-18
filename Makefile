@@ -31,4 +31,7 @@ vet:
 	$(GO_VET)
 
 release:
-	@goreleaser --skip-validate
+	@read -p "Enter Tag Name:" tag; \
+	git tag --delete $$tag  2> /dev/null; \
+	git tag $$tag; \
+	goreleaser --rm-dist
